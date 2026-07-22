@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Installation Guide - RobotAI Documentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            margin: -40px -40px 30px -40px;
+            text-align: center;
+        }
+        h1 { font-size: 2em; margin: 20px 0 10px 0; color: #667eea; }
+        h2 { font-size: 1.5em; margin: 25px 0 15px 0; color: #667eea; border-bottom: 2px solid #667eea; padding-bottom: 10px; }
+        h3 { font-size: 1.2em; margin: 20px 0 10px 0; color: #764ba2; }
+        p, li { margin: 10px 0; }
+        ul, ol { margin-left: 20px; margin-bottom: 15px; }
+        code { background: #f4f4f4; padding: 2px 6px; border-radius: 3px; font-family: 'Courier New', monospace; }
+        pre { background: #f4f4f4; padding: 15px; border-radius: 5px; overflow-x: auto; margin: 15px 0; }
+        a { color: #667eea; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        .nav-links { margin: 20px 0; padding: 15px; background: #f9f9f9; border-radius: 5px; }
+        .nav-links a { display: inline-block; margin-right: 15px; }
+        footer { text-align: center; margin-top: 40px; padding-top: 20px; border-top: 1px solid #ddd; color: #666; }
+        .info-box { background: #e3f2fd; padding: 15px; border-left: 4px solid #667eea; margin: 15px 0; border-radius: 3px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Installation Guide</h1>
+        </header>
+
+        <div class="nav-links">
+            <a href="index.html">← Documentation Home</a>
+            <a href="../software.html">Software Page</a>
+        </div>
+
+        <h2>System Requirements</h2>
+
+        <h3>Minimum Requirements</h3>
+        <ul>
+            <li><strong>Operating System:</strong> Windows 10, macOS 10.14+, or Ubuntu 18.04 LTS</li>
+            <li><strong>Processor:</strong> Intel i5 (6th Gen) or equivalent</li>
+            <li><strong>RAM:</strong> 8GB</li>
+            <li><strong>Storage:</strong> 500MB available space</li>
+            <li><strong>USB Port:</strong> USB 3.0 or higher</li>
+        </ul>
+
+        <h3>Recommended Specifications</h3>
+        <ul>
+            <li><strong>Processor:</strong> Intel i7 (8th Gen) or newer</li>
+            <li><strong>RAM:</strong> 16GB</li>
+            <li><strong>Storage:</strong> SSD with 2GB available space</li>
+            <li><strong>USB Port:</strong> Multiple USB 3.0 ports</li>
+            <li><strong>Display:</strong> 1920×1200 resolution or higher</li>
+        </ul>
+
+        <h2>Software Installation</h2>
+
+        <h3>Windows</h3>
+        <ol>
+            <li>Download the RobotAI Camera software from the website</li>
+            <li>Run <code>RobotAI_Camera_Setup.exe</code></li>
+            <li>Accept the license agreement</li>
+            <li>Choose installation location (default: <code>C:\Program Files\RobotAI</code>)</li>
+            <li>Select components to install:
+                <ul>
+                    <li>✓ Core Software (required)</li>
+                    <li>✓ USB Drivers (required)</li>
+                    <li>☐ Development Tools (optional)</li>
+                    <li>☐ Sample Projects (optional)</li>
+                </ul>
+            </li>
+            <li>Click <strong>Install</strong> and wait for completion</li>
+            <li>Restart your computer when prompted</li>
+        </ol>
+
+        <h3>macOS</h3>
+        <ol>
+            <li>Download the RobotAI Camera package</li>
+            <li>Open <code>RobotAI_Camera.dmg</code></li>
+            <li>Drag the RobotAI Camera icon to the Applications folder</li>
+            <li>Wait for the copy process to complete</li>
+            <li>Open Applications folder and double-click RobotAI Camera</li>
+            <li>Grant any requested permissions</li>
+            <li>Installation is complete</li>
+        </ol>
+
+        <h3>Linux (Ubuntu)</h3>
+        <pre>
+# Add repository
+sudo add-apt-repository ppa:robotai/camera
+sudo apt-get update
+
+# Install
+sudo apt-get install robotai-camera
+
+# Verify installation
+robotai-camera --version
+        </pre>
+
+        <h2>Hardware Setup</h2>
+
+        <h3>Physical Installation</h3>
+        <ol>
+            <li><strong>Locate Installation Space</strong>
+                <ul>
+                    <li>Choose a stable surface or mounting point</li>
+                    <li>Ensure clearance around the camera</li>
+                    <li>Avoid direct sunlight exposure</li>
+                </ul>
+            </li>
+            <li><strong>Mount the Camera</strong>
+                <ul>
+                    <li>Attach to tripod or mounting bracket</li>
+                    <li>Ensure secure connection</li>
+                    <li>Use the included M4 mounting plate if needed</li>
+                </ul>
+            </li>
+            <li><strong>Cable Management</strong>
+                <ul>
+                    <li>Connect USB 3.0 cable to computer</li>
+                    <li>Connect power adapter to camera</li>
+                    <li>Use cable clips to manage wire routing</li>
+                    <li>Keep cables away from heat sources</li>
+                </ul>
+            </li>
+        </ol>
+
+        <h3>Environmental Considerations</h3>
+        <ul>
+            <li><strong>Temperature:</strong> Install in environment maintained at 15-30°C</li>
+            <li><strong>Humidity:</strong> Avoid areas with high humidity or condensation</li>
+            <li><strong>Vibration:</strong> Minimize vibrations from nearby equipment</li>
+            <li><strong>Lighting:</strong> Position to avoid direct sunlight on sensor</li>
+        </ul>
+
+        <h2>Driver Installation</h2>
+
+        <h3>Automatic Driver Installation</h3>
+        <p>Most systems automatically install required USB drivers. To verify:</p>
+        <ol>
+            <li>Connect the camera via USB</li>
+            <li>Wait 10-15 seconds</li>
+            <li>Check Device Manager (Windows) or System Report (macOS)</li>
+            <li>Camera should appear as "RobotAI Camera"</li>
+        </ol>
+
+        <h3>Manual Driver Installation</h3>
+        <p>If automatic installation fails:</p>
+
+        <p><strong>Windows:</strong></p>
+        <ol>
+            <li>Download drivers from support website</li>
+            <li>Extract to a known location</li>
+            <li>Open Device Manager</li>
+            <li>Right-click unknown device</li>
+            <li>Select "Update driver"</li>
+            <li>Choose "Browse my computer for drivers"</li>
+            <li>Navigate to extracted folder</li>
+            <li>Complete installation</li>
+        </ol>
+
+        <p><strong>macOS:</strong></p>
+        <ol>
+            <li>Open System Preferences</li>
+            <li>Go to Security & Privacy</li>
+            <li>Allow installation of developer software</li>
+            <li>Reconnect camera</li>
+        </ol>
+
+        <h2>First Connection Test</h2>
+        <ol>
+            <li>Open RobotAI Camera software</li>
+            <li>Go to <strong>Settings > Device Manager</strong></li>
+            <li>Click <strong>Scan for Devices</strong></li>
+            <li>Your camera should appear in the list</li>
+            <li>Select and click <strong>Connect</strong></li>
+            <li>Status should show "Connected"</li>
+        </ol>
+
+        <h2>Firmware Update</h2>
+        <p>To update camera firmware:</p>
+        <ol>
+            <li>Connect camera to computer</li>
+            <li>Open RobotAI Camera software</li>
+            <li>Go to <strong>Settings > Firmware Update</strong></li>
+            <li>Click <strong>Check for Updates</strong></li>
+            <li>If update available, click <strong>Update</strong></li>
+            <li>Do not disconnect during update process</li>
+            <li>Camera will restart automatically</li>
+        </ol>
+
+        <h2>Troubleshooting Installation</h2>
+
+        <h3>Camera Not Detected</h3>
+        <ul>
+            <li>Check USB cable connection</li>
+            <li>Try different USB port (preferably 3.0)</li>
+            <li>Restart the computer</li>
+            <li>Verify drivers are installed</li>
+            <li>Check System Information for device errors</li>
+        </ul>
+
+        <h3>Software Won't Start</h3>
+        <ul>
+            <li>Verify system requirements are met</li>
+            <li>Check hard drive space (minimum 500MB)</li>
+            <li>Disable antivirus temporarily</li>
+            <li>Reinstall software</li>
+            <li>Check compatibility mode settings</li>
+        </ul>
+
+        <h3>Performance Issues</h3>
+        <ul>
+            <li>Check CPU and RAM usage</li>
+            <li>Close unnecessary applications</li>
+            <li>Update GPU drivers</li>
+            <li>Reduce resolution in settings</li>
+            <li>Enable power-saving mode on USB hub</li>
+        </ul>
+
+        <h2>Post-Installation</h2>
+        <p>After successful installation:</p>
+        <ol>
+            <li>Perform <a href="calibration.html">Calibration</a></li>
+            <li>Review <a href="operating-guide.html">Operating Guide</a></li>
+            <li>Explore <a href="image-capture-settings.html">Image Capture Settings</a></li>
+            <li>Run sample projects included in installation</li>
+        </ol>
+
+        <h2>See Also</h2>
+        <ul>
+            <li><a href="system-requirements.html">System Requirements</a></li>
+            <li><a href="troubleshooting.html">Troubleshooting Guide</a></li>
+        </ul>
+
+        <div class="nav-links">
+            <a href="index.html">← Back to Documentation</a>
+            <a href="../software.html">View Software Page</a>
+        </div>
+
+        <footer>
+            <p>&copy; 2026 RobotAI. All rights reserved.</p>
+        </footer>
+    </div>
+</body>
+</html>
