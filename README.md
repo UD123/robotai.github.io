@@ -128,4 +128,4 @@ This project is open source and available under the MIT License.
 
 ## Support
 
-For questions or support, please contact: info@robotai.com
+For questions or support, please contact: info@robotai.info
