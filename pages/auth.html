@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account - RobotAI</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-brand">
+                <a href="../index.html" class="logo">RobotAI</a>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="portfolio.html">Portfolio</a></li>
+                <li><a href="team.html">Team</a></li>
+                <li><a href="blog.html">Blog</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="auth.html" class="active">Account</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1>Account Portal</h1>
+            <p>Access your RobotAI client profile</p>
+        </div>
+    </section>
+
+    <!-- Auth / Profile Section -->
+    <section class="contact-section">
+        <div class="container">
+            <div class="contact-wrapper">
+                
+                <!-- Information Column -->
+                <div class="contact-info-wrapper">
+                    <h2>Client Access</h2>
+                    <div class="contact-info-item">
+                        <h4>Secure Connection</h4>
+                        <p>Authenticate to access protected resources and your workspace profile.</p>
+                    </div>
+                    <div class="contact-info-item">
+                        <h4>Data Protection</h4>
+                        <p>Sessions and credentials are encrypted using PostgreSQL Row Level Security.</p>
+                    </div>
+                </div>
+
+                <!-- Form / Dashboard Column -->
+                <div class="contact-form-wrapper">
+                    
+                    <!-- Sign In & Registration Panel -->
+                    <div class="contact-form" id="auth-panel">
+                        <h2>Sign In</h2>
+                        <div class="form-group">
+                            <label for="user-email">Email Address</label>
+                            <input type="email" id="user-email" placeholder="name@company.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="user-pass">Password</label>
+                            <input type="password" id="user-pass" placeholder="••••••••" required>
+                        </div>
+                        
+                        <div style="display: flex; gap: 15px; margin-top: 20px;">
+                            <button class="btn btn-primary" onclick="handleSignIn()">Sign In</button>
+                            <button class="btn btn-secondary" style="color: var(--primary-color); border-color: var(--border-color);" onclick="handleSignUp()">Register</button>
+                        </div>
+
+                        <p id="status-message" style="margin-top: 20px; font-weight: 600;"></p>
+                    </div>
+
+                    <!-- User Dashboard Panel (Hidden by default) -->
+                    <div class="contact-form" id="dashboard-panel" hidden>
+                        <h2>User Profile</h2>
+                        <div class="contact-info-item">
+                            <h4>Email Address</h4>
+                            <p id="display-email">—</p>
+                        </div>
+                        <div class="contact-info-item">
+                            <h4>User ID</h4>
+                            <p id="display-id" style="font-family: monospace; word-break: break-all;">—</p>
+                        </div>
+                        <div class="contact-info-item">
+                            <h4>Session Status</h4>
+                            <p style="color: var(--secondary-color); font-weight: 600;">Active</p>
+                        </div>
+
+                        <button class="btn btn-primary" style="margin-top: 10px;" onclick="handleSignOut()">Log Out</button>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <h4>RobotAI</h4>
+                    <p>Leading innovation in AI and robotics solutions worldwide.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="../index.html">Home</a></li>
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="services.html">Services</a></li>
+                        <li><a href="portfolio.html">Portfolio</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="team.html">Team</a></li>
+                        <li><a href="blog.html">Blog</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Press</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Connect</h4>
+                    <ul>
+                        <li><a href="#">LinkedIn</a></li>
+                        <li><a href="#">Twitter</a></li>
+                        <li><a href="#">GitHub</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 RobotAI. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../js/main.js"></script>
+
+    <!-- Supabase Authentication Logic -->
+    <script>
+        const SUPABASE_URL = 'https://cswcuywdtjoleatidfqj.supabase.co';
+        const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';
+
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        const authPanel = document.getElementById('auth-panel');
+        const dashboardPanel = document.getElementById('dashboard-panel');
+        const statusMsg = document.getElementById('status-message');
+        const displayEmail = document.getElementById('display-email');
+        const displayId = document.getElementById('display-id');
+
+        function setStatus(text, isError = false) {
+            statusMsg.textContent = text;
+            statusMsg.style.color = isError ? 'var(--accent-color)' : 'var(--secondary-color)';
+        }
+
+        function clearStatus() {
+            statusMsg.textContent = '';
+        }
+
+        // Toggle views on auth state change
+        supabaseClient.auth.onAuthStateChange((event, session) => {
+            if (session) {
+                authPanel.hidden = true;
+                dashboardPanel.hidden = false;
+                displayEmail.textContent = session.user.email;
+                displayId.textContent = session.user.id;
+            } else {
+                dashboardPanel.hidden = true;
+                authPanel.hidden = false;
+            }
+        });
+
+        // Handle user login
+        async function handleSignIn() {
+            clearStatus();
+            const email = document.getElementById('user-email').value.trim();
+            const password = document.getElementById('user-pass').value;
+
+            if (!email || !password) {
+                setStatus('Please fill in both email and password.', true);
+                return;
+            }
+
+            const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+            if (error) {
+                setStatus(error.message, true);
+            }
+        }
+
+        // Handle user registration
+        async function handleSignUp() {
+            clearStatus();
+            const email = document.getElementById('user-email').value.trim();
+            const password = document.getElementById('user-pass').value;
+
+            if (!email || !password) {
+                setStatus('Please fill in both email and password.', true);
+                return;
+            }
+
+            const { data, error } = await supabaseClient.auth.signUp({ 
+                email, 
+                password,
+                options: {
+                    emailRedirectTo: 'https://optical-mech.com/pages/auth.html'
+                }
+            });
+
+            if (error) {
+                setStatus(error.message, true);
+            } else {
+                setStatus('Registration submitted successfully.');
+            }
+        }
+
+        // Handle sign out
+        async function handleSignOut() {
+            await supabaseClient.auth.signOut();
+            clearStatus();
+        }
+    </script>
+</body>
+</html>
