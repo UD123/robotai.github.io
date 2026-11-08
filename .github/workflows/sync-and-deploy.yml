@@ -38,16 +38,6 @@ jobs:
             --exclude='/CNAME' \
             --exclude='/.github/workflows/' \
             source/ destination/
-          cd destination
-          git add -A
-          if ! git diff --cached --quiet; then
-            git config user.name "github-actions[bot]"
-            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git commit -m "Sync whisper-to-project" \
-              -m "Source commit: $(git -C ../source rev-parse HEAD)" \
-              -m "Co-authored-by: Copilot <223556219+Copilot@users.noreply.github.com>"
-            git push origin HEAD:main
-          fi
 
       - uses: oven-sh/setup-bun@v2
       - name: Install dependencies
@@ -106,6 +96,19 @@ jobs:
               ).replace(source_path, local_path)
             file.write_text(text)
           PY
+
+      - name: Commit synchronized files
+        working-directory: destination
+        run: |
+          git add -A
+          if ! git diff --cached --quiet; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git commit -m "Sync whisper-to-project" \
+              -m "Source commit: $(git -C ../source rev-parse HEAD)" \
+              -m "Co-authored-by: Copilot <223556219+Copilot@users.noreply.github.com>"
+            git push origin HEAD:main
+          fi
 
       - uses: actions/upload-pages-artifact@v3
         with:
