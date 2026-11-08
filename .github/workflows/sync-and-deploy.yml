@@ -1,0 +1,122 @@
+name: Sync source and deploy Pages
+
+on:
+  schedule:
+    - cron: "17 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages-sync
+  cancel-in-progress: false
+
+jobs:
+  sync-and-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out destination
+        uses: actions/checkout@v4
+        with:
+          path: destination
+          ref: main
+
+      - name: Check out source
+        uses: actions/checkout@v4
+        with:
+          repository: UD123/whisper-to-project
+          ref: main
+          path: source
+
+      - name: Synchronize source files
+        run: |
+          rsync -a --delete \
+            --exclude='/.git/' \
+            --exclude='/CNAME' \
+            --exclude='/.github/workflows/' \
+            source/ destination/
+          cd destination
+          git add -A
+          if ! git diff --cached --quiet; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git commit -m "Sync whisper-to-project" \
+              -m "Source commit: $(git -C ../source rev-parse HEAD)" \
+              -m "Co-authored-by: Copilot <223556219+Copilot@users.noreply.github.com>"
+            git push origin HEAD:main
+          fi
+
+      - uses: oven-sh/setup-bun@v2
+      - name: Install dependencies
+        working-directory: destination
+        run: bun install --frozen-lockfile
+
+      - name: Build static site
+        working-directory: destination
+        run: BUILD_STATIC=true bun run build
+
+      - name: Prepare Pages artifact
+        working-directory: destination
+        run: |
+          cp dist/client/index.html dist/client/404.html
+          cp CNAME dist/client/CNAME
+          touch dist/client/.nojekyll
+
+      - name: Bundle source media
+        working-directory: destination
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          from urllib.parse import urlparse
+          from urllib.request import Request, urlopen
+          import hashlib
+          import re
+
+          root = Path("dist/client")
+          media_dir = root / "media"
+          media_dir.mkdir(exist_ok=True)
+          files = list(root.rglob("*.html")) + list(root.rglob("*.js"))
+          pattern = re.compile(
+            r'(?:https://whisper-to-project\.lovable\.app)?'
+            r'(/__l5e/assets-v1/[^"\'`\\)]+?\.(?:mp4|webm|mov|png|jpe?g|webp|pdf))'
+          )
+          replacements = {}
+          for file in files:
+            text = file.read_text()
+            for path in pattern.findall(text):
+              if path in replacements:
+                continue
+              source = f"https://whisper-to-project.lovable.app{path}"
+              basename = Path(urlparse(path).path).name
+              prefix = hashlib.sha256(path.encode()).hexdigest()[:10]
+              target_name = f"{prefix}-{basename}"
+              request = Request(source, headers={"User-Agent": "GitHub-Actions"})
+              with urlopen(request, timeout=120) as response, (media_dir / target_name).open("wb") as output:
+                while chunk := response.read(1024 * 1024):
+                  output.write(chunk)
+              replacements[path] = f"/media/{target_name}"
+          for file in files:
+            text = file.read_text()
+            for source_path, local_path in replacements.items():
+              text = text.replace(
+                f"https://whisper-to-project.lovable.app{source_path}", local_path
+              ).replace(source_path, local_path)
+            file.write_text(text)
+          PY
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: destination/dist/client
+
+  deploy:
+    needs: sync-and-build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
